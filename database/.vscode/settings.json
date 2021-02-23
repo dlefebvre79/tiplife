@@ -1,0 +1,82 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "dvdstore",
+            "group": "tech_elevator",
+            "database": "dvdstore",
+            "username": "postgres",
+            "password": "postgres1"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "world",
+            "group": "tech_elevator",
+            "database": "world",
+            "username": "postgres",
+            "password": "postgres1"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "campground",
+            "group": "tech_elevator",
+            "database": "campground",
+            "username": "postgres",
+            "password": "postgres1"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "projects",
+            "group": "tech_elevator",
+            "database": "projects",
+            "username": "postgres",
+            "password": "postgres1"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "postgres",
+            "group": "tech_elevator",
+            "database": "postgres",
+            "username": "postgres",
+            "password": "postgres1"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "gills_art",
+            "group": "tech_elevator",
+            "database": "gills_art",
+            "username": "postgres",
+            "password": "postgres1"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "tiplife",
+            "group": "dlefebvre",
+            "database": "tiplife",
+            "username": "postgres",
+            "password": "postgres1"
+        }
+    ],
+    "sqltools.autoConnectTo": ""
+}
