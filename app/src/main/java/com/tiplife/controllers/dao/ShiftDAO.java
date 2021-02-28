@@ -1,4 +1,4 @@
-package com.tiplife.controllers;
+package com.tiplife.controllers.dao;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

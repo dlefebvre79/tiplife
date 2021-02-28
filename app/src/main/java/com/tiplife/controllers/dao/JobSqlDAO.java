@@ -1,4 +1,4 @@
-package com.tiplife.controllers;
+package com.tiplife.controllers.dao;
 
 import java.util.ArrayList;
 import java.util.List;
