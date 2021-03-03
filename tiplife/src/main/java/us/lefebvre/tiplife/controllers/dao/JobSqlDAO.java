@@ -1,4 +1,4 @@
-package com.tiplife.controllers.dao;
+package us.lefebvre.tiplife.controllers.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
-import com.tiplife.models.Job;
+import us.lefebvre.tiplife.models.Job;
 
 @Component
 public class JobSqlDAO implements JobDAO

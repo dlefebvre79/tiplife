@@ -1,8 +1,8 @@
-package com.tiplife.controllers.dao;
+package us.lefebvre.tiplife.controllers.dao;
 
 import java.util.List;
 
-import com.tiplife.models.Job;
+import us.lefebvre.tiplife.models.Job;
 
 public interface JobDAO
 {

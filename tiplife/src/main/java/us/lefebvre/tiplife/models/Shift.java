@@ -1,4 +1,4 @@
-package com.tiplife.models;
+package us.lefebvre.tiplife.models;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

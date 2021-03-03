@@ -1,4 +1,4 @@
-package com.tiplife.models;
+package us.lefebvre.tiplife.models;
 
 public class Employee
 {

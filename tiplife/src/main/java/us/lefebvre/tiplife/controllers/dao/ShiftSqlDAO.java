@@ -1,4 +1,4 @@
-package com.tiplife.controllers.dao;
+package us.lefebvre.tiplife.controllers.dao;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,8 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
-import com.tiplife.models.Job;
-import com.tiplife.models.Shift;
+import us.lefebvre.tiplife.models.Job;
+import us.lefebvre.tiplife.models.Shift;
 
 @Component
 public class ShiftSqlDAO implements ShiftDAO

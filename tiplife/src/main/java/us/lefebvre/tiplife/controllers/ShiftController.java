@@ -1,4 +1,4 @@
-package com.tiplife.controllers;
+package us.lefebvre.tiplife.controllers;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

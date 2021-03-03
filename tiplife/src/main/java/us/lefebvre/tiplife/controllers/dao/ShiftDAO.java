@@ -1,12 +1,12 @@
-package com.tiplife.controllers.dao;
+package us.lefebvre.tiplife.controllers.dao;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import com.tiplife.models.Job;
-import com.tiplife.models.Shift;
+import us.lefebvre.tiplife.models.Job;
+import us.lefebvre.tiplife.models.Shift;
 
 public interface ShiftDAO
 {
