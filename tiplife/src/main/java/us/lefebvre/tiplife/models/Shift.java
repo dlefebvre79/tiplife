@@ -1,6 +1,7 @@
 package us.lefebvre.tiplife.models;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -100,7 +101,7 @@ public class Shift
 	public BigDecimal getHourlyTips()
 	{
 		BigDecimal totalTips = getTips();
-		return totalTips.divide(getDecimalHours());
+		return totalTips.divide(getDecimalHours(), 2, RoundingMode.HALF_UP);
 	}
 	
 	private BigDecimal getDecimalHours()
@@ -109,7 +110,7 @@ public class Shift
 		int minutes = this.getLength().getMinute();
 		int totalMinutes = (hours * MINUTES_PER_HOUR) + minutes;
 		BigDecimal decimalHours = BigDecimal.valueOf(totalMinutes)
-				.divide(BigDecimal.valueOf(MINUTES_PER_HOUR));
+				.divide(BigDecimal.valueOf(MINUTES_PER_HOUR), 2, RoundingMode.HALF_UP);
 		return decimalHours;
 	}
 }

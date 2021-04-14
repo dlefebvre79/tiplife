@@ -71,7 +71,7 @@ public class ShiftSqlDAO implements ShiftDAO
 		
 		SqlRowSet row = jdbcTemplate.queryForRowSet(sql, job.getId());
 		
-		if(row.next())
+		while(row.next())
 		{
 			shifts.add(mapRowToShift(row));
 		}
@@ -79,9 +79,10 @@ public class ShiftSqlDAO implements ShiftDAO
 	}
 
 	@Override
-	public List<Shift> findByDate(LocalDate date)
+	public List<Shift> findByDate(LocalDate start, LocalDate end)
 	{
 		List<Shift> shifts = new ArrayList<Shift>();
+		SqlRowSet row;
 		
 		String sql = "SELECT s.shift_id"
 					+ ", s.job_id"
@@ -93,12 +94,20 @@ public class ShiftSqlDAO implements ShiftDAO
 					+ ", s.notes "
 					+ "FROM shift AS s "
 					+ "JOIN day_part AS d "
-					+ "ON s.day_part_id = d.day_part_id "
-					+ "WHERE s.date = ?;";
+					+ "ON s.day_part_id = d.day_part_id ";
 		
-		SqlRowSet row = jdbcTemplate.queryForRowSet(sql, date);
-		
-		if(row.next())
+		if(start.isBefore(end))
+		{
+			String where = "WHERE s.date BETWEEN ? AND ?;"; 
+			row = jdbcTemplate.queryForRowSet(sql + where, start, end);
+		}
+		else
+		{
+			String where = "WHERE s.date = ?;";
+			row = jdbcTemplate.queryForRowSet(sql + where, start);
+		}
+
+		while(row.next())
 		{
 			shifts.add(mapRowToShift(row));
 		}
@@ -125,7 +134,7 @@ public class ShiftSqlDAO implements ShiftDAO
 		
 		SqlRowSet row = jdbcTemplate.queryForRowSet(sql, daypart);
 		
-		if(row.next())
+		while(row.next())
 		{
 			shifts.add(mapRowToShift(row));
 		}
@@ -136,6 +145,7 @@ public class ShiftSqlDAO implements ShiftDAO
 	public List<Shift> findByLength(LocalTime low, LocalTime high)
 	{
 		List<Shift> shifts = new ArrayList<Shift>();
+		SqlRowSet row;
 		
 		String sql = "SELECT s.shift_id"
 					+ ", s.job_id"
@@ -147,12 +157,20 @@ public class ShiftSqlDAO implements ShiftDAO
 					+ ", s.notes "
 					+ "FROM shift AS s "
 					+ "JOIN day_part AS d "
-					+ "ON s.day_part_id = d.day_part_id "
-					+ "WHERE s.length BETWEEN ? AND ?;";
+					+ "ON s.day_part_id = d.day_part_id ";
 		
-		SqlRowSet row = jdbcTemplate.queryForRowSet(sql, low, high);
+		if(low.compareTo(high) < 0)
+		{
+			String where = "WHERE s.length BETWEEN ? AND ?;"; 
+			row = jdbcTemplate.queryForRowSet(sql + where, low, high);
+		}
+		else
+		{
+			String where = "WHERE s.length >= ?;";
+			row = jdbcTemplate.queryForRowSet(sql + where, low);
+		}
 		
-		if(row.next())
+		while(row.next())
 		{
 			shifts.add(mapRowToShift(row));
 		}
@@ -163,6 +181,7 @@ public class ShiftSqlDAO implements ShiftDAO
 	public List<Shift> findByTips(BigDecimal low, BigDecimal high)
 	{
 		List<Shift> shifts = new ArrayList<Shift>();
+		SqlRowSet row;
 		
 		String sql = "SELECT s.shift_id"
 					+ ", s.job_id"
@@ -174,12 +193,20 @@ public class ShiftSqlDAO implements ShiftDAO
 					+ ", s.notes "
 					+ "FROM shift AS s "
 					+ "JOIN day_part AS d "
-					+ "ON s.day_part_id = d.day_part_id "
-					+ "WHERE s.tips BETWEEN ? AND ?;";
+					+ "ON s.day_part_id = d.day_part_id ";
 		
-		SqlRowSet row = jdbcTemplate.queryForRowSet(sql, low, high);
+		if(low.compareTo(high) < 0)
+		{
+			String where = "WHERE s.tips::numeric BETWEEN ? AND ?;"; 
+			row = jdbcTemplate.queryForRowSet(sql + where, low, high);
+		}
+		else
+		{
+			String where = "WHERE s.tips::numeric >= ?;";
+			row = jdbcTemplate.queryForRowSet(sql + where, low);
+		}
 		
-		if(row.next())
+		while(row.next())
 		{
 			shifts.add(mapRowToShift(row));
 		}
@@ -202,11 +229,11 @@ public class ShiftSqlDAO implements ShiftDAO
 					+ "FROM shift AS s "
 					+ "JOIN day_part AS d "
 					+ "ON s.day_part_id = d.day_part_id "
-					+ "WHERE s.notes ILIKE %?%;";
+					+ "WHERE s.notes ILIKE ?;";
 		
-		SqlRowSet row = jdbcTemplate.queryForRowSet(sql, notes);
+		SqlRowSet row = jdbcTemplate.queryForRowSet(sql, "%" + notes + "%");
 		
-		if(row.next())
+		while(row.next())
 		{
 			shifts.add(mapRowToShift(row));
 		}
@@ -226,7 +253,7 @@ public class ShiftSqlDAO implements ShiftDAO
 					+ ", length"
 					+ ", tips"
 					+ ", tipout"
-					+ ", notes "
+					+ ", notes) "
 					+ "VALUES "
 					+ "(?, ?, ?, ?, ?, ?, ?, ?);";
 		

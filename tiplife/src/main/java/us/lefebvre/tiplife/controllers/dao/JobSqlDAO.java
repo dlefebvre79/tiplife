@@ -38,6 +38,26 @@ public class JobSqlDAO implements JobDAO
 	}
 
 	@Override
+	public List<Job> findAll()
+	{
+		List<Job> jobs = new ArrayList<Job>();
+		
+		String sql = "SELECT job_id"
+					+ ", name "
+					+ "FROM job;";
+		
+		SqlRowSet row = jdbcTemplate.queryForRowSet(sql);
+		
+		while(row.next())
+		{
+			jobs.add(mapRowToJob(row));
+		}
+		
+		return jobs;
+	}
+
+
+	@Override
 	public List<Job> findByName(String name)
 	{
 		List<Job> jobs = new ArrayList<Job>();
@@ -45,9 +65,9 @@ public class JobSqlDAO implements JobDAO
 		String sql = "SELECT job_id"
 					+ ", name "
 					+ "FROM job "
-					+ "WHERE name = ?;";
+					+ "WHERE name ILIKE ?;";
 		
-		SqlRowSet row = jdbcTemplate.queryForRowSet(sql, name);
+		SqlRowSet row = jdbcTemplate.queryForRowSet(sql, "%" + name + "%");
 		
 		while(row.next())
 		{
@@ -86,6 +106,17 @@ public class JobSqlDAO implements JobDAO
 		jdbcTemplate.update(sql, job.getId());
 		
 		return getById(job.getId());
+	}
+
+	@Override
+	public boolean delete(Job job)
+	{
+		String sql = "DELETE FROM job "
+					+ "WHERE job_id = ?;";
+		
+		Boolean success = jdbcTemplate.update(sql, job.getId()) == 1;
+		
+		return success;
 	}
 
 	private Job mapRowToJob(SqlRowSet row)

@@ -9,6 +9,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import us.lefebvre.tiplife.models.Employee;
+import us.lefebvre.tiplife.models.Job;
 
 @Component
 public class EmployeeSqlDAO implements EmployeeDAO
@@ -46,10 +47,30 @@ public class EmployeeSqlDAO implements EmployeeDAO
 					+ ", first_name"
 					+ ", last_name "
 					+ "FROM employee "
-					+ "WHERE first_name = ? "
-						+ "AND last_name = ?;";
+					+ "WHERE first_name ILIKE ? "
+						+ "AND last_name ILIKE ?;";
 		
-		SqlRowSet row = jdbcTemplate.queryForRowSet(sql, firstName, lastName);
+		SqlRowSet row = jdbcTemplate.queryForRowSet(sql, "%" + firstName + "%", "%" + lastName + "%");
+		
+		while(row.next())
+		{
+			employees.add(mapRowToEmployee(row));
+		}
+		
+		return employees;
+	}
+
+	@Override
+	public List<Employee> findAll()
+	{
+		List<Employee> employees = new ArrayList<Employee>();
+		
+		String sql = "SELECT employee_id"
+					+ ", first_name"
+					+ ", last_name "
+					+ "FROM employee;";
+					
+		SqlRowSet row = jdbcTemplate.queryForRowSet(sql);
 		
 		while(row.next())
 		{
@@ -95,6 +116,16 @@ public class EmployeeSqlDAO implements EmployeeDAO
 		return getById(employee.getId());
 	}
 
+	@Override
+	public boolean delete(Employee employee)
+	{
+		String sql = "DELETE FROM employee "
+					+ "WHERE employee_id = ?;";
+		
+		Boolean success = jdbcTemplate.update(sql, employee.getId()) == 1;
+		
+		return success;
+	}
 	
 	private Employee mapRowToEmployee(SqlRowSet row)
 	{

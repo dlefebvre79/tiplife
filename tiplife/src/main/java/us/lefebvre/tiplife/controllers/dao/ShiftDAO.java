@@ -12,7 +12,7 @@ public interface ShiftDAO
 {
 	public Shift getById(int id);
 	public List<Shift> findByJob(Job job);
-	public List<Shift> findByDate(LocalDate date);
+	public List<Shift> findByDate(LocalDate start, LocalDate end);
 	public List<Shift> findByDayPart(String daypart);
 	public List<Shift> findByLength(LocalTime low, LocalTime high);
 	public List<Shift> findByTips(BigDecimal low, BigDecimal high);
