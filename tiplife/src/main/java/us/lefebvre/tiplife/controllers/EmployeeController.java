@@ -21,12 +21,8 @@ import us.lefebvre.tiplife.models.Job;
 @RequestMapping(path="/employee")
 public class EmployeeController
 {
-//	@Autowired
-//	ShiftDAO shiftDao;
 	@Autowired
 	EmployeeDAO employeeDao;
-//	@Autowired
-//	JobDAO jobDao;
 	
 	@GetMapping("/{id}")
 	public Employee getById(@PathVariable int id)
