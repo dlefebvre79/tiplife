@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -52,7 +53,8 @@ public class ShiftController
 			Job job = jobDao.getById(Integer.parseInt(queryParams.get("job")));
 			shifts = shiftDao.findByJob(job);
 		}
-		else if (queryParams.containsKey("date"))
+		
+		if (queryParams.containsKey("date"))
 		{
 			LocalDate start;
 			LocalDate end;
@@ -68,13 +70,38 @@ public class ShiftController
 				end = LocalDate.parse(queryParams.get("date"));
 			}
 
-			shifts = shiftDao.findByDate(start, end);
+			if(shifts.size() > 0)
+			{
+				for (Shift shift : shifts)
+				{
+					if(shift.getDate().compareTo(start) < 0 || shift.getDate().compareTo(end) > 0 )
+					{
+						shifts.remove(shift);
+					}
+				}
+			}
+			else
+			{
+				shifts = shiftDao.findByDate(start, end);
+			}
 		}
-		else if (queryParams.containsKey("daypart"))
+
+		if (queryParams.containsKey("daypart"))
 		{
-			shifts = shiftDao.findByDayPart(queryParams.get("daypart"));
+			String daypart = queryParams.get("daypart");
+			
+			if(shifts.size() > 0)
+			{
+				Predicate<Shift> condition = shift -> !shift.getDayPart().toLowerCase().contains(daypart);
+		        shifts.removeIf(condition);
+			}
+			else
+			{
+				shifts = shiftDao.findByDayPart(daypart);
+			}
 		}
-		else if (queryParams.containsKey("length"))
+		
+		if (queryParams.containsKey("length"))
 		{
 			LocalTime low;
 			LocalTime high;
@@ -91,9 +118,26 @@ public class ShiftController
 				high = LocalTime.parse(queryParams.get("length"), DateTimeFormatter.ISO_LOCAL_TIME);
 			}
 			
-			shifts = shiftDao.findByLength(low, high);
+			if(shifts.size() > 0)
+			{
+				if(low.equals(high))
+				{
+					Predicate<Shift> condition = shift -> shift.getLength().compareTo(low) < 0;
+			        shifts.removeIf(condition);
+				}
+				else
+				{
+					Predicate<Shift> condition = shift -> (shift.getLength().compareTo(low) < 0 || shift.getLength().compareTo(high) > 0);
+			        shifts.removeIf(condition);
+				}
+			}
+			else
+			{
+				shifts = shiftDao.findByLength(low, high);
+			}
 		}
-		else if (queryParams.containsKey("tips"))
+
+		if (queryParams.containsKey("tips"))
 		{
 			BigDecimal low;
 			BigDecimal high;
@@ -110,11 +154,38 @@ public class ShiftController
 				high = new BigDecimal(queryParams.get("tips"));
 			}
 			
-			shifts = shiftDao.findByTips(low, high);
+			if(shifts.size() > 0)
+			{
+				if(low.equals(high))
+				{
+					Predicate<Shift> condition = shift -> shift.getTips().compareTo(low) < 0;
+			        shifts.removeIf(condition);
+				}
+				else
+				{
+					Predicate<Shift> condition = shift -> (shift.getTips().compareTo(low) < 0 || shift.getTips().compareTo(high) > 0);
+			        shifts.removeIf(condition);
+				}
+			}
+			else
+			{
+				shifts = shiftDao.findByTips(low, high);
+			}
 		}
-		else if (queryParams.containsKey("notes"))
+
+		if (queryParams.containsKey("notes"))
 		{
-			shifts = shiftDao.findByNotes(queryParams.get("notes"));
+			String notes = queryParams.get("notes");
+			
+			if(shifts.size() > 0)
+			{
+				Predicate<Shift> condition = shift -> !shift.getNotes().toLowerCase().contains(notes);
+		        shifts.removeIf(condition);
+			}
+			else
+			{
+				shifts = shiftDao.findByNotes(notes);
+			}
 		}
 		
 		return shifts;

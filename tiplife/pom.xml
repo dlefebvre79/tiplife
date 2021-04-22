@@ -58,6 +58,18 @@
             <artifactId>spring-jdbc</artifactId>
             <version>5.3.5</version>
         </dependency>
+        <dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-test</artifactId>
+		    <scope>test</scope>
+		</dependency>
+        <!-- security - begin -->
+		<dependency>
+		    <groupId>com.okta.spring</groupId>
+		    <artifactId>okta-spring-boot-starter</artifactId>
+		    <version>1.1.0</version>
+		</dependency>
+		<!-- security - end -->
     </dependencies>
 
 	<build>
